@@ -1,0 +1,19 @@
+{% if resultados %}
+    <h2 class="text-xl font-bold text-gray-800 mb-6">Cronograma para: <span class="text-green-600 capitalize">{{ busca }}</span></h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% for lixo in resultados %}
+            <div class="p-5 bg-gray-50 rounded-xl border border-gray-200 shadow-sm">
+                <h3 class="font-bold text-gray-800 text-lg mb-3">🗑️ {{ lixo[0] }}</h3>
+                <div class="text-gray-700 space-y-2">
+                    <p><span class="font-semibold">Dias:</span> {{ lixo[1] }}</p>
+                    <p><span class="font-semibold">Horário:</span> {{ lixo[2] }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+        Nenhum cronograma encontrado para o bairro <b>{{ busca }}</b>. Tente pesquisar por "Centro" ou "Metzler".
+    </div>
+{% endif %}

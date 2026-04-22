@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coleta Inteligente - Campo Bom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+    <style>.htmx-indicator{display:none;} .htmx-request .htmx-indicator{display:block;} .htmx-request.htmx-indicator{display:block;}</style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+    <header class="bg-green-700 text-white p-6 shadow-md">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold flex items-center gap-2">♻️ Coleta Inteligente</h1>
+            <p class="mt-2 text-green-100">Consulte os dias e horários da coleta de lixo no seu bairro.</p>
+                <a href="/guia" class="inline-block mt-4 text-sm bg-white text-green-700 font-bold px-4 py-2 rounded-full hover:bg-green-50 transition shadow-sm">
+                📖 Ver Guia Prático de Descarte
+                </a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-sm border border-gray-200 mx-4">
+        
+        <div class="mb-8">
+            <form hx-get="/" 
+                  hx-target="#area-resultados" 
+                  hx-swap="innerHTML">
+                
+                <label for="bairro" class="block text-gray-700 font-semibold mb-2">Digite o nome do seu bairro:</label>
+                <div class="flex gap-3">
+                    <input type="text" name="bairro" id="bairro" placeholder="Ex: Centro, Metzler, Operária..." 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition shadow-sm cursor-pointer">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="area-resultados" class="border-t border-gray-100 pt-8 mt-4">
+            </div>
+        <div class="mt-12 p-6 bg-gradient-to-r from-purple-50 to-white rounded-xl border border-purple-100 shadow-sm">
+    <h2 class="text-xl font-bold text-purple-800 mb-2 flex items-center gap-2">
+        🧠 Dúvida sobre um lixo específico?
+    </h2>
+    <p class="text-gray-600 mb-4 text-sm">Pergunte para nossa IA especialista nas regras de Campo Bom.</p>
+    
+    <form hx-get="/perguntar-ia" 
+          hx-target="#resposta-ia" 
+          hx-swap="innerHTML"
+          hx-indicator="#carregando"
+          class="flex gap-3">
+        
+        <input type="text" name="duvida" placeholder="Ex: Onde eu jogo uma pilha que vazou?" 
+               class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition text-sm">
+        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition shadow-sm cursor-pointer whitespace-nowrap">
+            Perguntar
+        </button>
+    </form>
+
+    <div id="carregando" class="htmx-indicator mt-4 text-purple-600 font-semibold text-sm">
+            A IA está analisando sua pergunta...
+        </div>
+
+        <div id="resposta-ia"></div>
+    </div>
+
+    </main>
+</body>
+</html>
