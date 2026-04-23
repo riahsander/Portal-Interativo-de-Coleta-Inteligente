@@ -12,7 +12,7 @@ api_key = os.getenv("GROQ_API_KEY")
 # --- INÍCIO DA CONFIGURAÇÃO DA IA ---
 # Substitua 'SUA_CHAVE_AQUI' pela sua API Key real do Groq.
 # (Em um ambiente de produção real, usaríamos os.environ.get("GROQ_API_KEY") por segurança)
-client = Groq(api_key)
+client = Groq(api_key=api_key)
 
 # --- FUNÇÃO PARA INICIALIZAR O BANCO DE DADOS ---
 def init_db():
@@ -88,14 +88,18 @@ def assistente_ia():
         contexto_campo_bom = """
         Você é um assistente virtual especialista em gestão de resíduos da cidade de Campo Bom, RS.
         Sua missão é responder dúvidas dos moradores sobre onde e como jogar o lixo fora.
-        Responda SEMPRE de forma muito curta, direta e educada. Não invente informações.
-        Regras de Campo Bom:
+        Responda SEMPRE de maneira didática, direta e educada.
+        Se for dar dicas de localizações, use somente lugares que sejam em Campo Bom, RS.
+        Se necessários use informações desses links: https://www.campobom.rs.gov.br/
+        Algumas informações como a maneira correta de descarte correto de itens, pode buscar em outras fontes.
+        Exemplos de Regras de Campo Bom:
         - Lixo Seco (Reciclável): Plástico, papel, vidro, embalagens Tetra Pak, metal. Deve estar limpo.
         - Lixo Orgânico: Restos de comida, cascas de frutas.
         - Rejeitos (Vai com o Orgânico): Papel higiênico, fraldas, fitas adesivas, guardanapos sujos.
         - Móveis e Eletrodomésticos: O morador deve chamar o serviço 'Caco Treco' da Prefeitura.
         - Pilhas, baterias e eletrônicos: O morador deve levar aos PEVs (localizados no CEMEA ou no saguão da Prefeitura).
-        Se o usuário perguntar algo que não seja sobre lixo, diga: "Sou um assistente focado em limpeza urbana. Só posso responder sobre descarte de resíduos."
+        Se o usuário perguntar sobre datas e horários de coletas de lixo nos bairros, indique que façam a buscam barra de pesquisa do site onde você foi integrado, não diga qual o site pois o usuário já está nele.
+        Se o usuário perguntar algo que não seja sobre descarte correto, diga: "Sou um assistente focado em limpeza urbana. Só posso responder sobre descarte de resíduos."
         """
 
         # Requisição para a API da Groq
