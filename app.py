@@ -10,37 +10,91 @@ load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
 # --- INÍCIO DA CONFIGURAÇÃO DA IA ---
-# Substitua 'SUA_CHAVE_AQUI' pela sua API Key real do Groq.
-# (Em um ambiente de produção real, usaríamos os.environ.get("GROQ_API_KEY") por segurança)
-client = Groq(api_key=api_key)
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 # --- FUNÇÃO PARA INICIALIZAR O BANCO DE DADOS ---
 def init_db():
     conn = sqlite3.connect('coleta.db')
     cursor = conn.cursor()
     
-    # Tabela de bairros
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS bairros (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL UNIQUE
-        )
-    ''')
+    # Cria as tabelas
+    cursor.execute('''CREATE TABLE IF NOT EXISTS bairros (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL UNIQUE)''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS cronograma (id INTEGER PRIMARY KEY AUTOINCREMENT, bairro_id INTEGER, tipo_lixo TEXT NOT NULL, dia_semana TEXT NOT NULL, horario TEXT DEFAULT '06h às 15h', FOREIGN KEY(bairro_id) REFERENCES bairros(id))''')
     
-    # Tabela do cronograma de coleta
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS cronograma (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            bairro_id INTEGER,
-            tipo_lixo TEXT NOT NULL,
-            dia_semana TEXT NOT NULL,
-            horario TEXT DEFAULT '06h às 15h',
-            FOREIGN KEY(bairro_id) REFERENCES bairros(id)
-        )
-    ''')
-    
+    # Verifica se o banco está vazio (típico do Render quando acorda)
+    cursor.execute('SELECT COUNT(*) FROM bairros')
+    if cursor.fetchone()[0] == 0:
+        # Se estiver vazio, popula com os dados oficiais
+        bairros = ['25 de Julho', 'Alto Paulista', 'Aurora', 'Barrinha', 'Bela Vista',
+        'Bem Viver I', 'Bem Viver II', 'Bem Viver III', 'Centro', 'Cohab Leste',
+        'Cohab Sul', 'Colina Deuner', 'Esperança', 'Firenze', 'Floresta',
+        'Gringos', 'Industrial Sul', 'Jardim do Sol', 'Metzler', 'Morada do Sol',
+        'Operária', 'Paulista', 'Porto Blos', 'Quatro Colônias', 'Recanto da Paz',
+        'Renascer', 'Rio Branco', 'Santa Lúcia', 'Santo Antônio', 'Sempre Unidos',
+        'Solar do Campo', 'União', 'Vila Rica', 'Zona Expansão Urbana Leste',
+        'Zona Industrial Norte', 'Zona Rural Norte'] 
+        for bairro in bairros:
+            cursor.execute('INSERT OR IGNORE INTO bairros (nome) VALUES (?)', (bairro,))
+            
+        cursor.execute('SELECT id, nome FROM bairros')
+        bairros_db = {nome: id for id, nome in cursor.fetchall()}
+        
+        cronogramas = {
+            # Segunda-feira
+            'Cohab Sul': ('Segunda-feira', 'Terça e Quinta-feira'),
+            'Centro': ('Segunda-feira', 'Terça e Quinta-feira'),
+            'Bela Vista': ('Segunda-feira', 'Terça e Quinta-feira'),
+            '25 de Julho': ('Segunda-feira', 'Terça e Quinta-feira'),
+            'Colina Deuner': ('Segunda-feira', 'Terça e Quinta-feira'),
+            'Cohab Leste': ('Segunda-feira', 'Terça e Quinta-feira'),
+            'Jardim do Sol': ('Segunda-feira', 'Terça e Quinta-feira'),
+            'Barrinha': ('Segunda-feira', 'Terça e Quinta-feira'),
+            
+            # Terça-feira
+            'Firenze': ('Terça-feira', 'Quarta e Sexta-feira'),
+            'Metzler': ('Terça-feira', 'Quarta e Sexta-feira'),
+            'Renascer': ('Terça-feira', 'Quarta e Sexta-feira'),
+            'Aurora': ('Terça-feira', 'Quarta e Sexta-feira'),
+            'Rio Branco': ('Terça-feira', 'Quarta e Sexta-feira'),
+            
+            # Quarta-feira
+            'Operária': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Sempre Unidos': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Esperança': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Floresta': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Industrial Sul': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Bem Viver I': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Bem Viver II': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Gringos': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Vila Rica': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Porto Blos': ('Quarta-feira', 'Terça e Quinta-feira'),
+            'Celeste': ('Quinta-feira', 'Terça, Quintas e Sábados'),
+            
+            # Sexta-feira
+            'Quatro Colônias': ('Sexta-feira', 'Terça e Quinta-feira'),
+            'Santa Lúcia': ('Sexta-feira', 'Terça e Quinta-feira'),
+            'Santo Antônio': ('Sexta-feira', 'Terça e Quinta-feira'),
+            'Bem Viver III': ('Sexta-feira', 'Terça e Quinta-feira'),
+            'Morada do Sol': ('Sexta-feira', 'Terça e Quinta-feira'),
+            'União': ('Sexta-feira', 'Terça e Quinta-feira'),
+            
+            # Sábado
+            'Alto Paulista': ('Sábado', 'Segunda e Quarta-feira'),
+            'Paulista': ('Sábado', 'Segunda e Quarta-feira'),
+            'Solar do Campo': ('Sábado', 'Segunda e Quarta-feira'),
+            'Recanto da Paz': ('Sábado', 'Segunda e Quarta-feira'),
+            'Zona Industrial Norte': ('Sábado', 'Quartas e Sextas-feira'),
+            'Zona Rural Norte': ('Sábado', 'Quartas e Sextas-feira'),
+            'Zona Expansão Urbana Leste': ('Sábado', 'Segunda e Quarta-feira') }
+
+        for c in cronogramas:
+            cursor.execute('INSERT INTO cronograma (bairro_id, tipo_lixo, dia_semana) VALUES (?, ?, ?)', c)
+            
     conn.commit()
     conn.close()
+
+# GARANTA que o init_db() rode logo que o arquivo for lido pelo servidor:
+init_db()
 
 # --- ROTA 1: PÁGINA INICIAL E BUSCA (HTMX) ---
 @app.route('/')
@@ -78,7 +132,7 @@ def guia():
 # --- ROTA 3: ASSISTENTE VIRTUAL COM IA ---
 @app.route('/perguntar-ia')
 def assistente_ia():
-    pergunta_usuario = request.args.get('duvida')
+    pergunta_usuario = request.args.get('duvida','')[:500]
     
     if not pergunta_usuario:
         return "<p class='text-red-500 text-sm'>Por favor, digite sua dúvida.</p>"
