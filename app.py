@@ -3,6 +3,7 @@ import sqlite3
 import os
 from groq import Groq
 from dotenv import load_dotenv
+import unicodedata
 
 app = Flask(__name__)
 
@@ -107,27 +108,44 @@ init_db()
 def index():
     busca = request.args.get('bairro')
     resultados = []
+    
+    # Variável para guardar o nome oficial (com acento) para mostrar na tela depois
+    nome_oficial = busca 
 
     if busca:
+        # 1. Tira os acentos e deixa minúsculo o que o usuário digitou
+        busca_limpa = unicodedata.normalize('NFKD', busca).encode('ASCII', 'ignore').decode('utf-8').lower().strip()
+
         conn = sqlite3.connect('coleta.db')
         cursor = conn.cursor()
         
-        # Busca no banco usando LIKE para encontrar pedaços do nome
+        # Puxamos todos os horários e nomes dos bairros do banco
         cursor.execute('''
-            SELECT c.tipo_lixo, c.dia_semana, c.horario
+            SELECT c.tipo_lixo, c.dia_semana, c.horario, b.nome
             FROM cronograma c
             JOIN bairros b ON c.bairro_id = b.id
-            WHERE b.nome LIKE ?
-        ''', (f'%{busca}%',))
+        ''')
         
-        resultados = cursor.fetchall()
+        # 2. Filtramos no próprio Python (que é muito mais inteligente que o SQLite para textos)
+        for linha in cursor.fetchall():
+            nome_banco = linha[3] # O nome do bairro que veio do banco
+            
+            # Tira os acentos e deixa minúsculo o nome que está no banco de dados
+            nome_banco_limpo = unicodedata.normalize('NFKD', nome_banco).encode('ASCII', 'ignore').decode('utf-8').lower()
+            
+            # Compara as duas versões "limpas"
+            if busca_limpa in nome_banco_limpo:
+                # Se achou, guarda os horários e salva o nome oficial com acento
+                resultados.append((linha[0], linha[1], linha[2]))
+                nome_oficial = nome_banco 
+        
         conn.close()
 
-        # Se a requisição veio do HTMX, devolvemos apenas o bloco de resultados
+        # Se a requisição veio do HTMX, devolvemos o HTML
         if 'HX-Request' in request.headers:
-            return render_template('resultados.html', resultados=resultados, busca=busca)
+            return render_template('resultados.html', resultados=resultados, busca=nome_oficial)
 
-    # Se for um acesso normal (abrindo o site), devolve a página inteira
+    # Se for um acesso normal, devolve a página inteira
     return render_template('index.html')
 
 # --- ROTA 2: GUIA DE DESCARTE ---
