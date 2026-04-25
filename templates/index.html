@@ -39,11 +39,6 @@
             border: 2px solid white;
         }
 
-        .btn-guia:hover {
-            background-color: #f8f9fa;
-            color: #146c43;
-        }
-
         .btn-contatos {
             border: 2px solid white;
             color: white;
@@ -71,10 +66,10 @@
             <p class="lead mb-4">Consulte os dias e horários da coleta de lixo no seu bairro em Campo Bom.</p>
             
             <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <button class="btn btn-guia px-4 py-2 shadow-sm" data-bs-toggle="collapse" data-bs-target="#chatIA">
-                    📖 Ver Guia Prático de Descarte
-                </button>
-                <a href="/contatos" class="btn btn-contatos px-4 py-2 shadow-sm">
+                <a href="#chatIA" class="btn btn-guia px-4 py-2 shadow-sm text-decoration-none">
+                    📖 Guia Prático de Descarte
+                </a>
+                <a href="/contatos" class="btn btn-contatos px-4 py-2 shadow-sm text-decoration-none">
                     📞 Contatos e Agendamentos
                 </a>
             </div>
@@ -105,28 +100,29 @@
 
         <div class="row justify-content-center mt-5">
             <div class="col-md-8">
-                <div id="resultado">
-                    </div>
+                <div id="resultado"></div>
             </div>
         </div>
 
-        <div class="row justify-content-center mt-4 collapse" id="chatIA">
+        <div class="row justify-content-center mt-4 mb-5" id="chatIA">
             <div class="col-md-8">
                 <div class="card border-success shadow">
                     <div class="card-header bg-success text-white fw-bold">
                         🤖 Assistente Virtual de Descarte
                     </div>
                     <div class="card-body">
-                        <p class="text-muted small">Pergunte onde descartar sofás, eletrônicos, óleo de cozinha, etc.</p>
+                        <p class="text-muted small">Pergunte onde descartar móveis, eletrônicos, pilhas, etc.</p>
                         <form hx-post="/ia" hx-target="#resposta-ia" hx-indicator="#carregando">
                             <div class="input-group">
-                                <input type="text" name="pergunta" class="form-control" placeholder="Onde descarto uma bateria de carro?">
+                                <input type="text" name="pergunta" class="form-control" placeholder="Ex: Onde jogo meu sofá velho?">
                                 <button class="btn btn-success" type="submit">Perguntar</button>
                             </div>
                         </form>
+                        
                         <div id="carregando" class="htmx-indicator mt-2 text-center text-success">
-                            <div class="spinner-border spinner-border-sm" role="status"></div> Analisando regras do município...
+                            <div class="spinner-border spinner-border-sm" role="status"></div> Analisando regras...
                         </div>
+                        
                         <div id="resposta-ia" class="mt-3 p-3 bg-light rounded border-start border-success border-4">
                             </div>
                     </div>
