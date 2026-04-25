@@ -231,6 +231,12 @@ def assistente_ia():
         print(f"Erro na integração com IA: {e}")
         return "<p class='text-red-500 text-sm mt-4'>Erro ao consultar a IA. Verifique sua chave de API ou conexão.</p>"
 
+
+@app.route('/contatos')
+def contatos():
+    return render_template('contatos.html')
+
+
 # --- INICIALIZAÇÃO DO SERVIDOR ---
 if __name__ == '__main__':
     init_db() # Garante que o banco exista sempre que o código rodar
