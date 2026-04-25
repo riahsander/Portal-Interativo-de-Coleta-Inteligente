@@ -1,41 +1,61 @@
-{% extends "base.html" %} {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Canais de Atendimento - Campo Bom</h2>
-    
-    <div class="row g-4">
-        <div class="col-md-6">
-            <div class="card h-100 shadow-sm border-success">
-                <div class="card-body">
-                    <h5 class="card-title text-success font-weight-bold">Secretaria do Meio Ambiente (SEMA)</h5>
-                    <p class="card-text">Responsável por licenças, denúncias e agendamento do <strong>Caco Treco</strong>.</p>
-                    <ul class="list-unstyled">
-                        <li>📞 <strong>Telefone:</strong> (51) 3598-8643</li>
-                        <li>📱 <strong>Central:</strong> Ligue 156</li>
-                        <li>📧 <strong>E-mail:</strong> sema@campobom.rs.gov.br</li>
-                        <li>📍 <strong>Endereço:</strong> Av. Independência, 800 (Centro)</li>
-                    </ul>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatos - Coleta Inteligente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background-color: #198754; /* O mesmo verde do seu site */
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1>♻️ Coleta Inteligente</h1>
+            <p class="lead">Canais de Atendimento e Agendamentos</p>
+            <a href="/" class="btn btn-outline-light mt-3">⬅ Voltar para o Início</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm border-success">
+                    <div class="card-body">
+                        <h5 class="card-title text-success fw-bold">Secretaria do Meio Ambiente (SEMA)</h5>
+                        <p class="card-text">Responsável por licenças, denúncias e agendamento do <strong>Caco Treco</strong> (recolhimento de móveis).</p>
+                        <ul class="list-unstyled mt-3">
+                            <li class="mb-2">📞 <strong>Telefone:</strong> (51) 3598-8643</li>
+                            <li class="mb-2">📱 <strong>Central:</strong> Ligue 156</li>
+                            <li class="mb-2">📧 <strong>E-mail:</strong> sema@campobom.rs.gov.br</li>
+                            <li>📍 <strong>Endereço:</strong> Av. Independência, 800 (Centro)</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-primary font-weight-bold">CEMEA Nestor Weiler</h5>
-                    <p class="card-text">Centro de Educação Ambiental e ponto de descarte de pequenos eletrónicos e pilhas.</p>
-                    <ul class="list-unstyled">
-                        <li>📞 <strong>Telefone:</strong> (51) 3597-8372</li>
-                        <li>📧 <strong>E-mail:</strong> cemea@campobom.rs.gov.br</li>
-                        <li>📍 <strong>Endereço:</strong> Rua Aimoré, 513 (Metzler)</li>
-                    </ul>
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm border-primary">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary fw-bold">CEMEA Nestor Weiler</h5>
+                        <p class="card-text">Centro de Educação Ambiental e ponto de descarte de pequenos eletrônicos e pilhas.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li class="mb-2">📞 <strong>Telefone:</strong> (51) 3597-8372</li>
+                            <li class="mb-2">📧 <strong>E-mail:</strong> cemea@campobom.rs.gov.br</li>
+                            <li>📍 <strong>Endereço:</strong> Rua Aimoré, 513 (Metzler)</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="mt-5 p-4 bg-light rounded border">
-        <h5 class="font-weight-bold">Como agendar o Caco Treco?</h5>
-        <p>O serviço de recolha de móveis e eletrodomésticos grandes deve ser solicitado via telefone ou presencialmente na SEMA. O camião passa em dias específicos conforme a região.</p>
-    </div>
-</div>
-{% endblock %}
+</body>
+</html>
