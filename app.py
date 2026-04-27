@@ -44,69 +44,54 @@ def init_db():
         
         # Mapeamento Completo à prova de erros
         dados_cidade = {
-            # --- Lixo Seco: Segunda-feira ---
-            '25 de Julho': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Barrinha': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Bela Vista': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Celeste': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Centro': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Cohab Leste': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Cohab Sul': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Colina Deuner': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Dona Augusta': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Genuíno Sampaio': ('Segunda-feira', 'Terça e Quinta-feira'),
-            'Jardim do Sol': ('Segunda-feira', 'Terça e Quinta-feira'),
+    # GRUPO 1: Seletiva (Ter e Sáb) | Orgânica (Seg, Qua e Sex)
+    'Z Industrial Norte': ('Terça e Sábado', 'Quarta e Sexta'), # Exceção: Sem orgânica à Seg
+    'Z Rural Norte': ('Terça e Sábado', 'Quarta e Sexta'),      # Exceção: Sem orgânica à Seg
+    'Alto Paulista': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Aurora': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Celeste': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Colina Deuner': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Dona Augusta': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Firenze': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Genuíno Sampaio': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Imigrante Norte': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Imigrante Sul': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Ipiranga': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Metzler': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Paulista': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Rio Branco': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    'Solar do Campo': ('Terça e Sábado', 'Segunda, Quarta e Sexta'),
+    
+    # ATENÇÃO: Define aqui qual é o esquema correto para o Centro
+    'Centro': ('Terça e Sábado', 'Segunda, Quarta e Sexta'), 
 
-            # --- Lixo Seco: Terça-feira ---
-            'Aurora': ('Terça-feira', 'Quarta e Sexta-feira'),
-            'Firenze': ('Terça-feira', 'Quarta e Sexta-feira'),
-            'Imigrante Norte': ('Terça-feira', 'Quarta e Sexta-feira'),
-            'Imigrante Sul': ('Terça-feira', 'Quarta e Sexta-feira'),
-            'Ipiranga': ('Terça-feira', 'Quarta e Sexta-feira'),
-            'Metzler': ('Terça-feira', 'Quarta e Sexta-feira'),
-            'Renascer': ('Terça-feira', 'Quarta e Sexta-feira'),
-            'Rio Branco': ('Terça-feira', 'Quarta e Sexta-feira'),
+    # GRUPO 2: Seletiva (Seg e Sex) | Orgânica (Ter e Qui)
+    'Z Industrial Sul': ('Segunda e Sexta', 'Terça e Quinta'),
+    'Zona Rural Sul': ('Segunda e Sexta', 'Terça e Quinta'),
 
-            # --- Lixo Seco: Quarta-feira ---
-            'Bem Viver I': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Bem Viver II': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Esperança': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Floresta': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Gringos': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Industrial Sul': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Mônaco': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Operária': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Porto Blos': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Sempre Unidos': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Vila Nova': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Vila Rica': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Catleia': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Dom Guilherme': ('Quarta-feira', 'Terça e Quinta-feira'),
-            'Blumemburg': ('Quarta-feira', 'Terça e Quinta-feira'),
-
-            # --- Lixo Seco: Sexta-feira ---
-            'Bem Viver III': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Fauth': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Luz do Sol': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Morada do Sol': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Quatro Colônias': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Santa Lúcia': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Santo Antônio': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Sete de Junho': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'União': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Vale dos Sinos': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Vila Brito': ('Sexta-feira', 'Terça e Quinta-feira'),
-            'Vila Velha': ('Sexta-feira', 'Terça e Quinta-feira'),
-
-            # --- Lixo Seco: Sábado ---
-            'Alto Paulista': ('Sábado', 'Segunda e Quarta-feira'),
-            'Paulista': ('Sábado', 'Segunda e Quarta-feira'),
-            'Recanto da Paz': ('Sábado', 'Segunda e Quarta-feira'),
-            'Solar do Campo': ('Sábado', 'Segunda e Quarta-feira'),
-            'Zona Expansão Urbana Leste': ('Sábado', 'Segunda e Quarta-feira'),
-            'Zona Industrial Norte': ('Sábado', 'Quartas e Sextas-feira'),
-            'Zona Rural Norte': ('Sábado', 'Quartas e Sextas-feira')
-        }
+    # GRUPO 3: Seletiva (Seg e Sex) | Orgânica (Ter, Qui e Sáb)
+    '25 de Julho': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Barrinha': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Bela Vista': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Bem Viver': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Cohab Leste': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Cohab Sul': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Esperança': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Floresta': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Gringos': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Jardim do Sol': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Mônaco': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Operária': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Porto Blos': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Quatro Colônias': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Santa Lucia': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Santo Antônio': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Sempre Unidos': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Vila Brito': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Vila Nova': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Vila Reicher': ('Segunda e Sexta', 'Terça, Quinta e Sábado'),
+    'Vila Rica': ('Segunda e Sexta', 'Terça, Quinta e Sábado')
+}
 
         # 3. Inserção Dinâmica
         for nome_bairro, horarios in dados_cidade.items():
